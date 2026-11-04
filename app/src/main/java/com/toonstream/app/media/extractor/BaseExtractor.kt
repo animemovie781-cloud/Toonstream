@@ -31,6 +31,13 @@ abstract class BaseExtractor : VideoExtractor {
                 "User-Agent",
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
             )
+            reqBuilder.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
+            reqBuilder.header("Accept-Language", "en-US,en;q=0.9")
+            reqBuilder.header("Sec-Fetch-Dest", "document")
+            reqBuilder.header("Sec-Fetch-Mode", "navigate")
+            reqBuilder.header("Sec-Fetch-Site", "same-origin")
+            reqBuilder.header("Upgrade-Insecure-Requests", "1")
+            
             referer?.let { reqBuilder.header("Referer", it) }
             headers.forEach { (k, v) -> reqBuilder.header(k, v) }
 
@@ -40,6 +47,10 @@ abstract class BaseExtractor : VideoExtractor {
         } catch (_: Exception) {
             null
         }
+    }
+
+    protected fun cleanJsString(input: String): String {
+        return input.replace("\\/", "/").replace("\\\"", "\"").replace("\\'", "'")
     }
 
     /**

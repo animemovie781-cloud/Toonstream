@@ -14,6 +14,12 @@ object ExtractorRegistry {
         register(RubyStmExtractor())
         register(FilesForeverExtractor())
         register(VoeExtractor())
+        register(StreamWishExtractor())
+        register(FileMoonExtractor())
+        register(VidhideExtractor())
+        register(AbyssExtractor())
+        register(DoodExtractor())
+        register(StreamTapeExtractor())
     }
 
     fun register(extractor: VideoExtractor) {

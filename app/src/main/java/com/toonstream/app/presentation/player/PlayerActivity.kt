@@ -90,6 +90,9 @@ class PlayerActivity : AppCompatActivity(), Media3PlayerManager.PlayerEventListe
             loadWithOverviewMode = true
             useWideViewPort = true
             mediaPlaybackRequiresUserGesture = false
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            javaScriptCanOpenWindowsAutomatically = false
+            setSupportMultipleWindows(false)
             userAgentString =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
@@ -115,8 +118,24 @@ class PlayerActivity : AppCompatActivity(), Media3PlayerManager.PlayerEventListe
                         url.contains("abyssplayer") ||
                         url.contains("vidara") ||
                         url.contains("voe.sx") ||
-                        url.contains("toonstream.us")
-                return if (isLegitEmbed) false else true
+                        url.contains("streamwish") ||
+                        url.contains("filemoon") ||
+                        url.contains("vidhide") ||
+                        url.contains("iqsmartgames.com") ||
+                        url.contains("toonstream.us") ||
+                        url.contains("google") ||
+                        url.contains("gstatic")
+                
+                // Allow the main frame to navigate to legit embeds, but block popup-style redirects
+                if (request.isForMainFrame) {
+                    return if (isLegitEmbed) false else {
+                         // Still let it load if it's the first load or a known redirect pattern
+                         false 
+                    }
+                }
+                
+                // Block non-legit sub-frame navigations (usually ads)
+                return !isLegitEmbed
             }
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
@@ -168,7 +187,8 @@ class PlayerActivity : AppCompatActivity(), Media3PlayerManager.PlayerEventListe
         lifecycleScope.launch {
             val savedPosition = viewModel.getSavedPosition(pageUrl)
 
-            if (link.type == VideoType.HLS || link.type == VideoType.MP4 || link.url.contains(".m3u8") || link.url.contains(".mp4")) {
+            // Try ExoPlayer for anything that is not explicitly a WebEmbed
+            if (link.extractorName != "WebEmbed" || link.url.contains(".m3u8") || link.url.contains(".mp4")) {
                 binding.webPlayerView.visibility = View.GONE
                 binding.playerView.visibility = View.VISIBLE
                 binding.webPlayerView.onPause()

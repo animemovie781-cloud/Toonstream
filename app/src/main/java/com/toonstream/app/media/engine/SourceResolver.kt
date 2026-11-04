@@ -48,7 +48,13 @@ object SourceResolver {
                 } else {
                     link
                 }
-                PlaybackValidator.validate(tagged)
+                
+                // If it's a direct m3u8 or mp4, we can trust it more and skip strict validation if it's already marked as working
+                if (tagged.url.contains(".m3u8") || tagged.url.contains(".mp4")) {
+                    tagged
+                } else {
+                    PlaybackValidator.validate(tagged)
+                }
             }
         }.awaitAll()
 

@@ -41,8 +41,12 @@ class SourceSelectionBottomSheet(
             dismiss()
         }
 
-        binding.recyclerSources.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerSources.adapter = adapter
+        binding.recyclerSources.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = adapter
+            setHasFixedSize(true)
+        }
+        
         adapter.submitList(sources)
     }
 
