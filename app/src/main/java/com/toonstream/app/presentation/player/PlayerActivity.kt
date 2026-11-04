@@ -198,6 +198,7 @@ class PlayerActivity : AppCompatActivity(), Media3PlayerManager.PlayerEventListe
                 playerManager?.playSource(link, subs, savedPosition)
             } else {
                 // Fallback to web embed
+                Toast.makeText(this@PlayerActivity, "Native extraction failed. Using browser player.", Toast.LENGTH_SHORT).show()
                 binding.playerView.visibility = View.GONE
                 binding.webPlayerView.visibility = View.VISIBLE
                 playerManager?.pause()

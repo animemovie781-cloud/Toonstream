@@ -20,6 +20,7 @@ object SourcePriorityManager {
             .distinctBy { it.url.trim() }
             .sortedWith(
                 compareByDescending<ExtractorLink> { it.isWorking }
+                    .thenByDescending { it.extractorName != "WebEmbed" } // NATIVE FIRST
                     .thenByDescending { link ->
                         // Exact match with preferred quality gets highest bonus
                         if (link.quality == preferences.preferredQuality) 1000

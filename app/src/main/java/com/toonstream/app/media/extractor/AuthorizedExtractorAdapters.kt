@@ -108,6 +108,7 @@ class GenericHtml5Extractor : BaseExtractor() {
         // 2. Look for regex matches of m3u8 or mp4 in inline script tags
         val m3u8Match = Regex("""["'](https?://[^"']+\.m3u8[^"']*)["']""").find(html)
             ?: Regex("""sources:\s*\[\{file:\s*["']([^"']+)["']""").find(html)
+            ?: Regex("""src:\s*["']([^"']+\.m3u8[^"']*)["']""").find(html)
         if (m3u8Match != null) {
             val directM3u8 = m3u8Match.groupValues[1]
             links.addAll(expandMasterM3u8(directM3u8, name, url, permittedHeaders))
@@ -117,8 +118,15 @@ class GenericHtml5Extractor : BaseExtractor() {
         if (links.isEmpty()) {
             val iframes = doc.select("iframe[src]")
             for (iframe in iframes) {
-                val iframeSrc = iframe.attr("abs:src")
+                var iframeSrc = iframe.attr("abs:src")
+                if (iframeSrc.isBlank()) iframeSrc = iframe.attr("data-src")
+                if (iframeSrc.isBlank()) iframeSrc = iframe.attr("data-l")
+                
                 if (iframeSrc.isNotBlank() && !iframeSrc.contains("ads") && !iframeSrc.contains("facebook")) {
+                    if (!iframeSrc.startsWith("http")) {
+                        iframeSrc = if (iframeSrc.startsWith("//")) "https:$iframeSrc" else "https://toonstream.us$iframeSrc"
+                    }
+                    
                     // Try to resolve using registry first, then fallback to recursive HTML5
                     val extractor = ExtractorRegistry.getExtractor(iframeSrc)
                     if (extractor !is GenericHtml5Extractor) {

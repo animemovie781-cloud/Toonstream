@@ -97,9 +97,9 @@ object LoadLinksEngine {
                         listOf(
                             ExtractorLink(
                                 id = server.embedUrl,
-                                sourceName = "${server.name} [Embed Web]",
+                                sourceName = "${server.name} [Browser Only]",
                                 url = server.embedUrl,
-                                quality = VideoQuality.fromLabel(server.name),
+                                quality = VideoQuality.Q_UNKNOWN,
                                 type = VideoType.UNKNOWN,
                                 referer = "https://toonstream.us/",
                                 language = server.language,
