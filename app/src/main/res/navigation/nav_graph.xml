@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.toonstream.app.presentation.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.toonstream.app.presentation.movies.MoviesFragment"
+        android:label="Movies"
+        tools:layout="@layout/fragment_category_list" />
+
+    <fragment
+        android:id="@+id/navigation_series"
+        android:name="com.toonstream.app.presentation.series.SeriesFragment"
+        android:label="Series"
+        tools:layout="@layout/fragment_category_list" />
+
+    <fragment
+        android:id="@+id/navigation_my_list"
+        android:name="com.toonstream.app.presentation.library.MyListFragment"
+        android:label="My List"
+        tools:layout="@layout/fragment_my_list" />
+
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="com.toonstream.app.presentation.details.DetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="content_url"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.toonstream.app.presentation.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+
+</navigation>
