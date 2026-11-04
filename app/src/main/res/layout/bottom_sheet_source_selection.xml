@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#16161F"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <!-- Drag Handle -->
@@ -12,22 +13,18 @@
         android:id="@+id/drag_handle"
         android:layout_width="40dp"
         android:layout_height="4dp"
-        android:background="#444455"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="#444455" />
 
     <TextView
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Select Video Source"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text_sources_count"
@@ -36,20 +33,15 @@
         android:layout_marginTop="2dp"
         android:textColor="#888899"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_title"
         tools:text="12 working sources resolved locally" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_sources"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:minHeight="200dp"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintHeight_max="450dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_sources_count"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         tools:listitem="@layout/item_source_entry" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

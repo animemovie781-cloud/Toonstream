@@ -172,12 +172,17 @@ object ToonStreamParser {
     fun parseDetails(html: String, pageUrl: String): ContentDetails {
         val doc = Jsoup.parse(html)
 
-        val title = doc.selectFirst("h1.entry-title")?.text()?.trim()
+        var title = doc.selectFirst("h1.entry-title")?.text()?.trim()
             ?: doc.selectFirst(".entry-title")?.text()?.trim()
             ?: doc.title().replace("Series - ToonStream", "")
                 .replace("- Movie - ToonStream", "")
                 .replace("- ToonStream", "")
                 .trim()
+        
+        // Clean up common artifacts like "2x2" or trailing episode info
+        title = title.replace(Regex("""\s+\d+x\d+.*$"""), "").trim()
+        title = title.replace(Regex("""\s+Episode\s+\d+.*$""", RegexOption.IGNORE_CASE), "").trim()
+        title = title.replace(Regex("""\s+Season\s+\d+.*$""", RegexOption.IGNORE_CASE), "").trim()
 
         val posterElem = doc.selectFirst(".poster img")
             ?: doc.selectFirst(".post-thumbnail img")

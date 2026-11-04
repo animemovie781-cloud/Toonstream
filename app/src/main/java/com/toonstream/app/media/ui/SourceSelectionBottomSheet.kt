@@ -1,5 +1,6 @@
 package com.toonstream.app.media.ui
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.toonstream.app.databinding.BottomSheetSourceSelectionBinding
 import com.toonstream.app.databinding.ItemSourceEntryBinding
@@ -21,6 +24,20 @@ class SourceSelectionBottomSheet(
 
     private var _binding: BottomSheetSourceSelectionBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog.setOnShowListener {
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).apply {
+                    state = BottomSheetBehavior.STATE_EXPANDED
+                    skipCollapsed = true
+                }
+            }
+        }
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,6 +108,9 @@ class SourceSelectionBottomSheet(
                 itemBinding.root.setOnClickListener {
                     onItemClick(link)
                 }
+                
+                // Ensure visibility is reset correctly
+                itemBinding.root.visibility = View.VISIBLE
             }
         }
     }

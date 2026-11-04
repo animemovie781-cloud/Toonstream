@@ -192,6 +192,7 @@ class PlayerActivity : AppCompatActivity(), Media3PlayerManager.PlayerEventListe
                 binding.webPlayerView.visibility = View.GONE
                 binding.playerView.visibility = View.VISIBLE
                 binding.webPlayerView.onPause()
+                binding.webPlayerView.loadUrl("about:blank")
 
                 val subs = viewModel.playbackResult.value?.subtitles ?: emptyList()
                 playerManager?.playSource(link, subs, savedPosition)
